@@ -27,6 +27,9 @@ from rtlsdr import *
 
 import freqshow
 
+from scipy import signal
+
+START_FREQ = 103	# Default startup Frequency in mhz
 
 class FreqShowModel(object):
 	def __init__(self, width, height):
@@ -43,9 +46,11 @@ class FreqShowModel(object):
 		self.set_max_intensity('AUTO')
 		# Initialize RTL-SDR library.
 		self.sdr = RtlSdr()
-		self.set_center_freq(90.3)
+		# center freq
+		self.set_center_freq(START_FREQ)
 		self.set_sample_rate(2.4)
 		self.set_gain('AUTO')
+
 
 	def _clear_intensity(self):
 		if self.min_auto_scale:
@@ -148,6 +153,12 @@ class FreqShowModel(object):
 			self.max_intensity = float(intensity)
 		self._clear_intensity()
 
+	# Added from https://stackoverflow.com/questions/20618804/how-to-smooth-a-curve-in-the-right-way
+	def smooth(self, y, box_pts):
+		box = np.ones(box_pts)/box_pts
+		y_smooth = np.convolve(y, box, mode='same')
+		return y_smooth
+
 	def get_data(self):
 		"""Get spectrogram data from the tuner.  Will return width number of
 		values which are the intensities of each frequency bucket (i.e. FFT of
@@ -156,18 +167,33 @@ class FreqShowModel(object):
 		# Get width number of raw samples so the number of frequency bins is
 		# the same as the display width.  Add two because there will be mean/DC
 		# values in the results which are ignored.
-		samples = self.sdr.read_samples(freqshow.SDR_SAMPLE_SIZE)[0:self.width+2]
+		# Added changes from 
+		freqbins = self.sdr.read_samples(freqshow.SDR_SAMPLE_SIZE)[0:self.width+2]
+		window = signal.hann(freqshow.SDR_SAMPLE_SIZE, False,)[0:self.width+2]	
+		samples = freqbins * window
+
 		# Run an FFT and take the absolute value to get frequency magnitudes.
 		freqs = np.absolute(np.fft.fft(samples))
+
 		# Ignore the mean/DC values at the ends.
 		freqs = freqs[1:-1]
+
 		# Shift FFT result positions to put center frequency in center.
 		freqs = np.fft.fftshift(freqs)
+
 		# Convert to decibels.
 		freqs = 20.0*np.log10(freqs)
+
+		# Smooth Curve Display
+		freqs = self.smooth(freqs,20)
+
 		# Update model's min and max intensities when auto scaling each value.
 		if self.min_auto_scale:
-			min_intensity = np.min(freqs)
+			# Lower the display to near bottom of screen
+			#min_intensity = np.min(freqs)
+			min_intensity = int(np.average(freqs) -5)
+			self.min_intensity = min_intensity
+
 			self.min_intensity = min_intensity if self.min_intensity is None \
 				else min(min_intensity, self.min_intensity)
 		if self.max_auto_scale:
