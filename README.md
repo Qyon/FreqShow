@@ -1,20 +1,21 @@
 FreqShow
 ========
 
-![FreqShow](rgrokett.github.com/FreqShow/sample.jpg)
+![FreqShow](/sample.jpg)
 
 Raspberry Pi &amp; PiTFT-based RTL-SDR frequency scanning and display tool.  See installation and usage instructions in the guide at: https://learn.adafruit.com/freq-show-raspberry-pi-rtl-sdr-scanner/overview
 
-# UPDATE
+## UPDATE
 
 2018-07-23 
+
 This version includes feature updates:
-	+ Grid display pattern background
-	+ Noise smoothing 
-	+ Lowered floor for Spectrograph
-	+ Faster Waterfall display
-	+ Automatic startup on reboot
-	+ Automatic shutdown on Quit
++ Grid display pattern background
++ Noise smoothing 
++ Lowered floor for Spectrograph
++ Faster Waterfall display
++ Automatic startup on reboot
++ Automatic shutdown on Quit
 
 Once you have FreqShow running as per Adafruit instructions (above), run 
 
