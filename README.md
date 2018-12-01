@@ -18,15 +18,22 @@ This version includes feature updates:
 + Automatic shutdown on Quit
 
 Once you have FreqShow running as per Adafruit instructions (above), run 
+ 
+```
+$ cd /home/pi
+$ mv FreqShow FreqShow.ORG
+$ git clone https://github.com/rgrokett/FreqShow.git
+$ cd FreqShow
+$ bash install.sh
+```
 
-	$ bash install.sh
-
-to install the reboot cron and startup file. (This assumes installed to /home/pi on Raspberry.)
+to install the reboot cron and startup file. (This assumes installed to /home/pi on Raspberry.) This replaces the original FreqShow with the new version.
 
 Edit model.py if you wish to change the initial frequency 
 
 START_FREQ = 103    # Default startup Frequency in mhz
 
+When you reboot, the new FreqShow will run automatically.
 
 Manually run FreqShow using:
 
