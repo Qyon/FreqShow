@@ -7,6 +7,28 @@ Raspberry Pi &amp; PiTFT-based RTL-SDR frequency scanning and display tool.  See
 
 ## UPDATE
 
+2020-10-08
+```
+Using Bangood PTFT 2.8 Resistive touch screen
+Model: mzdpi-vga-zero version b
+Install onto Buster using script instructions:
+Doc: http://raspberrypiwiki.com/2.8_inch_Touch_Screen_for_Pi_zero#Setup_screen_via_script_.28Recommend.29
+
+Edit freqshow.py:
+    os.putenv('SDL_VIDEODRIVER', 'fbcon')
+    os.putenv('SDL_FBDEV'      , '/dev/fb0')
+    os.putenv('SDL_MOUSEDRV'   , 'TSLIB')
+    os.putenv('SDL_MOUSEDEV'   , '/dev/input/event0')
+```
+
+Fix for missing pygame:
+```
+sudo apt-get install python-dev libsdl-image1.2-dev libsdl-mixer1.2-dev libsdl-ttf2.0-dev libsdl1.2-dev libsmpeg-dev python-numpy subversion libportmidi-dev ffmpeg libswscale-dev libavformat-dev libavcodec-dev libfreetype6-dev
+
+sudo pip install pygame
+
+```
+
 2018-07-23 
 
 This version includes feature updates:
