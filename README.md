@@ -62,3 +62,9 @@ Manually run FreqShow using:
 	$ sudo python freqshow.py
 
 
+Extra Feature:
+Once you determine everything is working properly, you can edit runFreq.sh and uncomment the shutdown command.  
+DO NOT do this until all is working correctly, else you will not be able to fix it and have to start all over.
+
+$ nano ~/runFreq.sh
+
