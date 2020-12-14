@@ -3,31 +3,87 @@ FreqShow
 
 ![FreqShow](/sample.jpg)
 
-Raspberry Pi &amp; PiTFT-based RTL-SDR frequency scanning and display tool.  See installation and usage instructions in the guide at: https://learn.adafruit.com/freq-show-raspberry-pi-rtl-sdr-scanner/overview
+Raspberry Pi &amp; PiTFT-based RTL-SDR frequency scanning and display tool.  See installation and usage instructions in the guide at: 
+
+https://learn.adafruit.com/freq-show-raspberry-pi-rtl-sdr-scanner/overview
+
 
 ## UPDATE
 
 2020-10-08
 ```
-Using Bangood PTFT 2.8 Resistive touch screen
-Model: mzdpi-vga-zero version b
-Install onto Buster using script instructions:
-Doc: http://raspberrypiwiki.com/2.8_inch_Touch_Screen_for_Pi_zero#Setup_screen_via_script_.28Recommend.29
+Install Buster Lite
+Login via SSH
+sudo apt update
+sudo apt upgrade
+sudo apt install git python3-pip python3-numpy
 
-Edit freqshow.py:
-    os.putenv('SDL_VIDEODRIVER', 'fbcon')
+If using Adafruit PTFT touch screens
+Follow 
+https://learn.adafruit.com/adafruit-pitft-3-dot-5-touch-screen-for-raspberry-pi/overview
+
+----
+If using Bangood PTFT 2.8 Resistive touch screen
+Model: mzdpi-vga-zero version b
+Touch: ADS7846 Touchscreen
+Follow: 
+http://raspberrypiwiki.com/2.8_inch_Touch_Screen_for_Pi_zero#Setup_screen_via_script_.28Recommend.29
+sudo apt-get install libts0 evtest libts-bin
+ls -l /dev/input
+Note that /dev/fb0 or fb1, and event0 or event1 so try as needed.
+
+Test Touch:
+sudo evtest
+Select ADS7846 Touchscreen
+Touch around on screen 
+
+Calibrate: 
+sudo TSLIB_FBDEVICE=/dev/fb0 TSLIB_TSDEVICE=/dev/input/event1 ts_calibrate
+Use pen to touch each point. Run again if necessary.
+----
+
+For both screen types, install pygame2 and SDL2:
+sudo pip3 install pygame
+sudo pip3 install pyrtlsdr
+sudo apt install libsdl2-mixer-dev libsdl2-image-dev libsdl2-ttf-dev libportmidi-dev libfreetype6-dev
+
+```
+LIBSDL2 issue:  You need LibSDL2.0.12 or higher
+If necessary build from source:
+https://www.libsdl.org/download-2.0.php
+cd ~
+wget https://www.libsdl.org/release/SDL2-2.0.12.tar.gz
+tar xvf SDL2-2.0.12.tar.gz
+cd SDL2-2.0.12
+./configure
+make
+sudo make install
+sudo nano /etc/ld.so.conf.d/arm-linux-gnueabihf.conf
+Add /usr/local/lib at top of file
+sudo ldconfig
+When you start freqshow.py you should see
+pygame 2.0.0 (SDL 2.0.12, python 3.7.3)
+```
+
+Go to below to install RTL-SDR and base FreqShow:
+https://learn.adafruit.com/freq-show-raspberry-pi-rtl-sdr-scanner/installation
+
+Edit freqshow.py: (if Bangood screen)
+    #os.putenv('SDL_VIDEODRIVER', 'fbcon') # Not used
     os.putenv('SDL_FBDEV'      , '/dev/fb0')
     os.putenv('SDL_MOUSEDRV'   , 'TSLIB')
-    os.putenv('SDL_MOUSEDEV'   , '/dev/input/event0')
+    os.putenv('SDL_MOUSEDEV'   , '/dev/input/event1')
+
+Once installed, you need to use Python3:
+cd ~/FreqShow/
+sudo python3 freqshow.py
+
+If you get the original FreqShow, YEA! 
+Test it to make sure touchscreen works
+Now install the update, below:
+
 ```
 
-Fix for missing pygame:
-```
-sudo apt-get install python-dev libsdl-image1.2-dev libsdl-mixer1.2-dev libsdl-ttf2.0-dev libsdl1.2-dev libsmpeg-dev python-numpy subversion libportmidi-dev ffmpeg libswscale-dev libavformat-dev libavcodec-dev libfreetype6-dev
-
-sudo pip install pygame
-
-```
 
 2018-07-23 
 
