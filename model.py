@@ -29,7 +29,7 @@ import freqshow
 
 from scipy import signal
 
-START_FREQ = 103	# Default startup Frequency in mhz
+START_FREQ = 145	# Default startup Frequency in mhz
 
 class FreqShowModel(object):
 	def __init__(self, width, height):

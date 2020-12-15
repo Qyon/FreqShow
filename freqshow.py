@@ -69,10 +69,10 @@ ui.Button.border_px    = 2
 
 if __name__ == '__main__':
 	# Initialize pygame and SDL to use the PiTFT display and touchscreen.
-	os.putenv('SDL_VIDEODRIVER', 'fbcon')
-	os.putenv('SDL_FBDEV'      , '/dev/fb0')
-	os.putenv('SDL_MOUSEDRV'   , 'TSLIB')
-	os.putenv('SDL_MOUSEDEV'   , '/dev/input/event0')
+	#os.putenv('SDL_VIDEODRIVER', 'fbcon')
+	#os.putenv('SDL_FBDEV'      , '/dev/fb0')
+	#os.putenv('SDL_MOUSEDRV'   , 'TSLIB')
+	#os.putenv('SDL_MOUSEDEV'   , '/dev/input/event0')
 	pygame.display.init()
 	pygame.font.init()
 	pygame.mouse.set_visible(True)
