@@ -1,0 +1,12 @@
+[Unit]
+Description=FT817 Helper
+
+[Service]
+WorkingDirectory=/home/pi/FreqShow
+ExecStart=/usr/bin/python3 /home/pi/FreqShow/freqshow.py
+Restart=always
+RestartSec=3
+ExecStopPost=/bin/sh -c 'if [ "$EXIT_STATUS" -eq "44" ]; then poweroff; fi'
+
+[Install]
+WantedBy=multi-user.target
